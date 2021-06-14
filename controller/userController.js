@@ -81,7 +81,7 @@ exports.new = function (req, res) {
          {
             if (err.keyPattern)
             if (err.keyPattern.phone == 1)
-                res.json("Istnieje uzytkownik o podanym numerze telefonu."); //TODO: obsługa błędów
+                res.json("Istnieje uzytkownik o podanym numerze telefonu."); //TODO: obsługa błędów.
             else
                 res.json(err);
          }
