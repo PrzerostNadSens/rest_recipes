@@ -67,6 +67,7 @@ exports.index = function (req, res) {
     });
 };
 // Handle create user actions
+
 exports.new = function (req, res) {
     var user = new User();
     user.first_name = req.body.first_name ? req.body.first_name : user.first_name;
@@ -74,21 +75,21 @@ exports.new = function (req, res) {
     user.administrator = req.body.administrator;
     user.phone = req.body.phone;
     user.mail = req.body.mail;
-    user.password = req.body.password;
+    user.password = bcrypt.hashSync(req.body.password, 10);
 // save the user and check for errors
     user.save(function (err) {
          if (err)
          {
             if (err.keyPattern)
             if (err.keyPattern.phone == 1)
-                res.json("Istnieje uzytkownik o podanym numerze telefonu."); //TODO: obsługa błędów.
+                res.status(400).json("Istnieje uzytkownik o podanym numerze telefonu."); //TODO: obsługa błędów.
             else
-                res.json(err);
+                res.status(400).json(err);
          }
          else
          {
             res.json({
-                id: user.user_id
+                id: user.id
             });
          }
     });
@@ -97,9 +98,8 @@ exports.new = function (req, res) {
 exports.view = function (req, res) {
     User.findById(req.params.user_id, function (err, user) {
         if (err)
-            res.send(err);
+            res.status(400).send(err);
         res.json({
-            message: 'User details loading..',
             data: user
         });
     });
@@ -108,7 +108,7 @@ exports.view = function (req, res) {
 exports.update = function (req, res) {
 User.findById(req.params.user_id, function (err, user) {
         if (err)
-            res.send(err);
+            res.status(400).send(err);
 user.name = req.body.name ? req.body.name : user.name;
         user.gender = req.body.gender;
         user.email = req.body.email;
@@ -116,7 +116,7 @@ user.name = req.body.name ? req.body.name : user.name;
 // save the user and check for errors
         user.save(function (err) {
             if (err)
-                res.json(err);
+                res.status(400).json(err);
             res.json({
                 id: user.user_id
             });
@@ -129,7 +129,7 @@ exports.delete = function (req, res) {
         _id: req.params.user_id
     }, function (err, user) {
         if (err)
-            res.send(err);
+            res.status(400).send(err);
 res.json({
             status: "success",
             message: 'User deleted'

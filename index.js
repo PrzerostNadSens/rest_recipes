@@ -15,9 +15,11 @@ app.use(bodyParser.json());
 
 const uri = 'mongodb+srv://Admin:trudne_haslo.123@cluster0.edli7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 // Prints "MongoError: bad auth Authentication failed."
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-}).catch(err => console.log(err.reason));
+//mongoose.connect(uri, {
+//  useNewUrlParser: true,
+//}).catch(err => console.log(err.reason));
+
+mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 
 var db = mongoose.connection;
 

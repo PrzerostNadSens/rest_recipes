@@ -1,7 +1,8 @@
-
+const jwt = require('jsonwebtoken');
 var mongoose = require('mongoose'),
 bcrypt = require('bcrypt'),
 Schema = mongoose.Schema;
+
 
 var userSchema = mongoose.Schema({
     first_name: {
@@ -37,7 +38,3 @@ var User = module.exports = mongoose.model('user', userSchema);
 module.exports.get = function (callback, limit) {
     User.find(callback).limit(limit);
 }
-
-userSchema.methods.comparePassword = function(password) {
-    return bcrypt.compareSync(password, this.hash_password);
-  };
